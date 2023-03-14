@@ -145,6 +145,7 @@
 ### 🚀 lv2
 | 문제번호 | 링크 |
 | ----- | ----- |
+|12945. 피보나치 수|[링크](./%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/lv2/12945.%E2%80%85%ED%94%BC%EB%B3%B4%EB%82%98%EC%B9%98%E2%80%85%EC%88%98/README.md)|
 |12951. JadenCase 문자열 만들기|[링크](./%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%A8%B8%EC%8A%A4/lv2/12951.%E2%80%85JadenCase%E2%80%85%EB%AC%B8%EC%9E%90%EC%97%B4%E2%80%85%EB%A7%8C%EB%93%A4%EA%B8%B0/README.md)|
 ### 🚀 unrated
 | 문제번호 | 링크 |
