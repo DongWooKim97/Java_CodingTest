@@ -1,73 +1,67 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int node = sc.nextInt();
-        int vertex = sc.nextInt();
-        int start = sc.nextInt();
+    static StringBuilder sb = new StringBuilder();
+    static boolean[] visitied;
+    static ArrayList<Integer>[] graph;
 
-        int[][] arr = new int[node + 1][node + 1];
-        for (int i = 0; i < vertex; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            arr[a][b] = arr[b][a] = 1;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(st.nextToken());
+
+        visitied = new boolean[n + 1];
+        graph = new ArrayList[n + 1];
+        for (int i = 1; i <= n; i++) {
+            graph[i] = new ArrayList<>();
         }
 
-        Map<Integer, List<Integer>> map = new HashMap<>();
+        for (int i = 0; i < m; i++) {
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            graph[a].add(b);
+            graph[b].add(a);
+        }
+        for (int i = 1; i <= n; i++) {
+            Collections.sort(graph[i]);
+        }
 
-        for (int i = 1; i <= node; i++) {
-            List<Integer> tmp = new ArrayList<>();
-            for (int j = 1; j <= node; j++) {
-                if (arr[i][j] == 1) {
-                    tmp.add(j);
-                }
+        dfs(start);
+        System.out.println(sb);
+
+        visitied = new boolean[n + 1];
+        bfs(start);
+    }
+
+    public static void dfs(int node) {
+        visitied[node] = true;
+        sb.append(node).append(" ");
+        for (int next : graph[node]) {
+            if (!visitied[next]) {
+                dfs(next);
             }
-            map.put(i, tmp);
-        }
-
-        int[] checked = new int[node + 1];
-        List<Integer> dfsResult = dfs(map, start, checked, new ArrayList<>());
-        for (int item : dfsResult) {
-            System.out.print(item + " ");
-        }
-        System.out.println();
-
-        checked = new int[node + 1];
-        List<Integer> bfsResult = bfs(map, start, checked, new LinkedList<>());
-        for (int item : bfsResult) {
-            System.out.print(item + " ");
         }
     }
 
-    public static List<Integer> dfs(Map<Integer, List<Integer>> map, int node, int[] checked, List<Integer> list) {
-        checked[node] = 1;
-        list.add(node);
-        for (int i : map.get(node)) {
-            if (checked[i] == 0) {
-                dfs(map, i, checked, list);
-            }
-        }
-        return list;
-    }
-
-    public static List<Integer> bfs(Map<Integer, List<Integer>> map, int node, int[] checked, Queue<Integer> queue) {
-        List<Integer> list = new ArrayList<>();
-        checked[node] = 1;
-        queue.offer(node);
-        while (!queue.isEmpty()) {
-            int len = queue.size();
-            for (int i = 0; i < len; i++) {
-                int x = queue.poll();
-                for (int g : map.get(x)) {
-                    if (checked[g] == 0) {
-                        checked[g] = 1;
-                        queue.offer(g);
-                    }
+    public static void bfs(int node) {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(node);
+        visitied[node] =true;
+        while (!q.isEmpty()) {
+            int x = q.poll();
+            System.out.print(x+" ");
+            for (int y : graph[x]) {
+                if(visitied[y] == false) {
+                    visitied[y] = true;
+                    q.add(y);
                 }
-                list.add(x);
             }
         }
-        return list;
     }
 }
