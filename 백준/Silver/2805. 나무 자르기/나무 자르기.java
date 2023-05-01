@@ -1,41 +1,43 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int tree = sc.nextInt();
-        int need = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken()); // number of trees
+        int M = Integer.parseInt(st.nextToken()); // required length
 
-        int[] arr = new int[tree];
-
-        int max = 0;
-        int min = 0;
-
-        for (int i = 0; i < tree; i++) {
-            arr[i] = sc.nextInt();
-
-            if (arr[i] > max) {
-                max = arr[i];
-            }
+        int[] trees = new int[N];
+        st = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < N; i++) {
+            trees[i] = Integer.parseInt(st.nextToken());
         }
 
-        int mid = 0;
-        while (min < max) {
-            mid = (min + max) / 2;
-            long take = 0;
-            for (int x : arr) {
-                if (x - mid > 0) {
-                    take += (x - mid);
-                }
+        Arrays.sort(trees);
+
+        long lt = 0, rt = trees[N - 1];
+        long maxLen = 0;
+        while (lt <= rt) {
+            long tmp = 0;
+            long mid = (lt + rt) / 2;
+
+            for (int i = 0; i < trees.length; i++) {
+                tmp += Math.max(0, trees[i] - mid);
             }
 
-            if (take < need) {
-                max = mid;
+            if (tmp >= M) {
+                maxLen = mid;
+                lt = mid + 1;
             } else {
-                min = mid + 1;
+                rt = mid - 1;
             }
 
         }
-        System.out.println(min - 1);
+        System.out.println(maxLen);
     }
 }
