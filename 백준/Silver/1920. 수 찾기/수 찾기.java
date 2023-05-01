@@ -1,50 +1,43 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        int count = sc.nextInt();
-        int[] arr = new int[count];
-
-        for (int i = 0; i < count; i++) {
-            arr[i] = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
+        int[] arr = new int[n];
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < n; i++) {
+            arr[i] = Integer.parseInt(st.nextToken());
         }
-
-        int subCount = sc.nextInt();
-        int[] subArr = new int[subCount];
-
-        for (int i = 0; i < subCount; i++) {
-            subArr[i] = sc.nextInt();
-        }
-
         Arrays.sort(arr);
-        for (int i = 0; i < subArr.length; i++) {
-            System.out.println(binarySearch(arr, subArr[i]));
+
+        int m = Integer.parseInt(br.readLine());
+        int[] targets = new int[m];
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < m; i++) {
+            targets[i] = Integer.parseInt(st.nextToken());
         }
 
-
-    }
-
-    public static int binarySearch(int[] arr, int key) {
-
-        int lt = 0, rt = arr.length - 1;
-
-        while (lt <= rt) {
-            int mid_idx = (lt + rt) / 2;
-
-            if (key < arr[mid_idx]) {
-                rt = mid_idx - 1;
-
-            } else if (key > arr[mid_idx]) {
-                lt = mid_idx + 1;
-            } else {
-                return 1;
+        for (int i = 0; i < m; i++) {
+            int lt = 0, rt = n - 1;
+            boolean condition = false;
+            while (lt <= rt) {
+                int mid = lt + (rt - lt) / 2;
+                if (targets[i] == arr[mid]) {
+                    System.out.println(1);
+                    condition = true;
+                    break;
+                } else if (targets[i] < arr[mid]) {
+                    rt = mid - 1;
+                } else {
+                    lt = mid + 1;
+                }
             }
+            if (!condition) System.out.println(0);
         }
-// 찾고자하는 값이 없을 때
-        return 0;
-
     }
 }
