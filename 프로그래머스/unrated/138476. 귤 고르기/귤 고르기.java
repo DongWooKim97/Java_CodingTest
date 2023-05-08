@@ -1,7 +1,7 @@
 import java.util.*;
 
 class Solution {
-    static Map<Integer, Integer> map = new TreeMap<>();
+    static Map<Integer, Integer> map = new HashMap<>();
 
     public int solution(int k, int[] tangerine) {
         int answer = 0;
