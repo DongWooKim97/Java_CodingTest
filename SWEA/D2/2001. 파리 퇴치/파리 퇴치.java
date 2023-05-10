@@ -1,20 +1,45 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
-class Solution {
-    static int[][] graph;
-    static int max;
+public class Solution {
+    static StringTokenizer st;
+    static int[][] arr;
+    static boolean[][] visited;
+    static int[] dx = {0, 1, 0, -1};
+    static int[] dy = {1, 0, -1, 0};
+    static int count, N, M;
 
-    static int flapper(int x, int y, int M) {
-        int sum = 0;
-        for (int i = 0; i < M; i++) {
-            for (int j = 0; j < M; j++) {
-                sum += graph[x + i][y + j];
+    static void dfs(Point p) {
+        visited[p.x][p.y] = true;
+
+        if (p.x + M - 1 < N && p.y + M - 1 < N) {
+            count = Math.max(count, exterm(p));
+        }
+
+        for (int i = 0; i < dx.length; i++) {
+            int nx = p.x + dx[i];
+            int ny = p.y + dy[i];
+
+            if (nx >= 0 && nx < N && ny >= 0 && ny < N && !visited[nx][ny]) {
+                dfs(new Point(nx, ny));
             }
         }
-        return sum;
+    }
+
+    static int exterm(Point p) {
+        int x = p.x;
+        int y = p.y;
+        int fly = 0;
+
+        for (int i = 0; i < M; i++) {
+            for (int j = 0; j < M; j++) {
+                fly += arr[x + i][y + j];
+            }
+        }
+        return fly;
     }
 
     public static void main(String[] args) throws IOException {
@@ -22,26 +47,34 @@ class Solution {
         int T = Integer.parseInt(br.readLine());
 
         for (int tc = 1; tc <= T; tc++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            int N = Integer.parseInt(st.nextToken()); // 정사각형의 가로 세로
-            int M = Integer.parseInt(st.nextToken()); // 파리채 크기 M x M
+            st = new StringTokenizer(br.readLine(), " ");
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
 
-            graph = new int[N][N];
-            max = 0;
+            arr = new int[N][N];
+            visited = new boolean[N][N];
+
             for (int i = 0; i < N; i++) {
-                st = new StringTokenizer(br.readLine(), " ");
-                for (int j = 0; j < N; j++) {
-                    graph[i][j] = Integer.parseInt(st.nextToken());
-                }
+                int[] tmp = Arrays.stream(br.readLine().split(" "))
+                        .mapToInt(Integer::parseInt)
+                        .toArray();
+                arr[i] = tmp;
             }
 
-            for (int i = 0; i <= N - M; i++) {
-                for (int j = 0; j <= N - M; j++) {
-                    int sum = flapper(i, j, M);
-                    max = Math.max(sum, max);
-                }
-            }
-            System.out.printf("#%d %d\n", tc, max);
+            count = 0;
+            Point start = new Point(0, 0);
+            dfs(start);
+            System.out.printf("#%d %d\n", tc, count);
         }
+    }
+}
+
+class Point {
+    int x;
+    int y;
+
+    public Point(int x, int y) {
+        this.x = x;
+        this.y = y;
     }
 }
