@@ -4,6 +4,7 @@ import java.util.Queue;
 
 class Solution {
     static int level;
+    static int[] visited;
 
     static void bfs(String begin, String target, String[] words) {
         Queue<String> q = new LinkedList<>();
@@ -15,7 +16,8 @@ class Solution {
                 if (now.equals(target)) return;
 
                 for (int j = 0; j < words.length; j++) {
-                    if (isConvetible(now, words[j])) {
+                    if (isConvetible(now, words[j]) && visited[j] == 0) {
+                        visited[j] = 1;
                         q.offer(words[j]);
                     }
                 }
@@ -36,6 +38,7 @@ class Solution {
     public int solution(String begin, String target, String[] words) {
         boolean isExist = Arrays.stream(words).anyMatch(target::equals);
         if (!isExist) return 0;
+        visited = new int[words.length];
         level = 0;
         bfs(begin, target, words);
         return level;
