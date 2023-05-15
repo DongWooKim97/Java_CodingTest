@@ -1,24 +1,23 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        long inp = sc.nextLong();
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        long S = Long.parseLong(br.readLine());
 
-        System.out.println(Search_N(inp));
-        sc.close();
+        System.out.println(search(S));
+        br.close();
     }
 
-    public static int Search_N(long S) {
+    public static int search(long S) {
         int N = 0;
         long sum = 0L;
-        int i = 0;
+        int idx = 0;
         while (true) {
-            sum += ++i;
-            if (sum > S) {
-                return N;
-            }
-            N++;
+            sum += ++idx;
+            if (sum > S) return N;
+            else N++;
         }
     }
 }
