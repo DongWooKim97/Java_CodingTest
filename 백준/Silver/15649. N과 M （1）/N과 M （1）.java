@@ -1,40 +1,35 @@
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.Arrays;
 
 class Main {
+	static int N, M;
+	static int[] combi;
 	static boolean[] visited;
-	static int[] arr;
-	
-	public static void dfs(int N, int M, int depth) {
-		if(depth == M) {
-			for(int val : arr) {
-				System.out.print(val+" ");
-			}
+	static void dfs(int level, int start) {
+		if(level == M) {
+			for(int x : combi) System.out.print(x+" ");
 			System.out.println();
 			return;
 		} else {
 			for(int i=0; i<N;i++) {
-				if(!visited[i]) {
+				if(!visited[i] ) {
 					visited[i] = true;
-					arr[depth] = i+1;
-					dfs(N,M,depth+1);
+					combi[level] = i+1;
+					dfs(level+1, i+1);
 					visited[i] = false;
-				}	
+				}
 			}
 		}
 	}
-	
-	public static void main(String args[]) throws Exception 
-	{
+	public static void main(String[] args) throws Exception{
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine()," ");
-		
-		int N = Integer.parseInt(st.nextToken());
-		int M = Integer.parseInt(st.nextToken());
-		arr = new int[M];
-		visited= new boolean[N];
-		
-		dfs(N, M, 0);
+		int[] tmp = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+		N = tmp[0];
+		M = tmp[1];
+		combi = new int[M];	
+		visited = new boolean[N];
+		dfs(0, 1);
 	}
 }
