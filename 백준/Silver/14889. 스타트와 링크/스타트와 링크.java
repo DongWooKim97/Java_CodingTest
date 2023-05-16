@@ -6,21 +6,24 @@ import java.util.Arrays;
 public class Main {
     static int N;
     static int[][] field;
-    static int[] visited;
+    static int[] team;
+    static boolean[] visited;
     static int minDiff = Integer.MAX_VALUE;
 
-    private static void DFS(int level, int startCount, int linkCount) {
-        if (level == N) {
-            if (startCount == N / 2 && linkCount == N / 2) {
-                calculateDiff();
-            }
+    private static void DFS(int level, int startCount, int index) {
+        if (startCount == N / 2) {
+            calculateDiff();
             return;
         }
 
-        visited[level] = 1;
-        DFS(level + 1, startCount + 1, linkCount);
-        visited[level] = 0;
-        DFS(level + 1, startCount, linkCount + 1);
+        for (int i = index; i < N; i++) {
+            if (!visited[i]) {
+                visited[i] = true;
+                team[level] = i;
+                DFS(level + 1, startCount + 1, i + 1);
+                visited[i] = false;
+            }
+        }
     }
 
     private static void calculateDiff() {
@@ -28,13 +31,11 @@ public class Main {
         int linkSum = 0;
 
         for (int i = 0; i < N; i++) {
-            for (int j = i + 1; j < N; j++) {
-                if (visited[i] == 1 && visited[j] == 1) {
+            for (int j = 0; j < N; j++) {
+                if (visited[i] && visited[j]) {
                     startSum += field[i][j];
-                    startSum += field[j][i];
-                } else if (visited[i] == 0 && visited[j] == 0) {
+                } else if (!visited[i] && !visited[j]) {
                     linkSum += field[i][j];
-                    linkSum += field[j][i];
                 }
             }
         }
@@ -47,7 +48,8 @@ public class Main {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         field = new int[N][N];
-        visited = new int[N];
+        team = new int[N];
+        visited = new boolean[N];
 
         for (int i = 0; i < N; i++) {
             field[i] = Arrays.stream(br.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
