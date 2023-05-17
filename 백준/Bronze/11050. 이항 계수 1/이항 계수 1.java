@@ -1,26 +1,15 @@
 import java.util.Scanner;
 
 public class Main {
-    
     public static void main(String[] args) {
-        
         Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int K = sc.nextInt();
+        System.out.println(BC(sc.nextInt(), sc.nextInt()));
+    }
 
-        int top = 1;
-        int bot1 = 1;
-        int bot2 = 1;
-
-        for (int i = 1; i <= N; i++) {
-            top *= i;
+    public static int BC(int n, int k) {
+        if (n == k || k == 0) {
+            return 1;
         }
-        for (int i = 1; i <= (N - K); i++) {
-            bot1 *= i;
-        }
-        for (int i = 1; i <= K; i++) {
-            bot2 *= i;
-        }
-        System.out.println(top / (bot1 * bot2));
+        return BC(n - 1, k - 1) + BC(n - 1, k);
     }
 }
